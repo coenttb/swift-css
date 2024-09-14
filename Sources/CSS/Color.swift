@@ -60,7 +60,7 @@ extension Color: CustomStringConvertible {
         case .keyword(let keyword):
             return keyword.rawValue
         case .hex(let value):
-            return "#\(value)"
+            return value.hasPrefix("#") ? value : "#\(value)"
         case .rgb(let r, let g, let b):
             return "rgb(\(r), \(g), \(b))"
         case .rgba(let r, let g, let b, let a):
