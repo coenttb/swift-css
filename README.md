@@ -39,27 +39,15 @@ This library allows Swift developers to work with CSS concepts using native Swif
 Here's a quick example of how you might use swift-css:
 
 ```swift
-import SwiftCSS
+import CSS
 
-let backgroundColor = CSS.Color.rgba(red: 100, green: 149, blue: 237, alpha: 1)
-let fontSize = 24.px
-let font = Margin.all(Length.px(10))
-
-let buttonStyle = Style(
-  backgroundColor: .hex("#007AFF"),
-  padding: Padding.all(Length.px(10)),
-  borderRadius: BorderRadius(Length.px(5))
-)
-
-print(backgroundColor)  // Outputs: rgb(100, 149, 237)
-print(fontSize)         // Outputs: 24px
-print(margin)           // Outputs: 10px
-print(buttonStyle)      // Outputs: background-color: #007AFF; padding: 10px; border-radius: 5px;
+let backgroundColor: CSS.Color = .rgba(red: 100, green: 149, blue: 237, alpha: 1) // Outputs: rgb(100, 149, 237)
+let fontSize: Length = 24.px // Outputs: 24px
 ```
 
 ## Recommended use with swift-html
 
-See [swift-html](https://github.com/coenttb/swift-html) for an example of how to use `swift-css`. `swift-html` uses `swift-css` as its model and provides convenience methods to easily and safely add inlineStyles to some HTML element.
+You use swift-css as the domain for your own functionality. For example, [swift-html](https://github.com/coenttb/swift-html) uses `swift-css` to easily and safely add inlineStyles to some HTML element.
 
 ## Installation
 
