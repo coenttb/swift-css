@@ -9,21 +9,21 @@ import Foundation
 
 public struct Font: Sendable, Equatable {
     public var family: [String]
-    public var size: FontSize
-    public var weight: FontWeight
-    public var style: FontStyle
-    public var variant: FontVariant
-    public var lineHeight: LineHeight?
-    public var stretch: FontStretch
+    public var size: CSS.Font.Size
+    public var weight: CSS.Font.Weight
+    public var style: CSS.Font.Style
+    public var variant: Font.Variant
+    public var lineHeight: CSS.LineHeight?
+    public var stretch: CSS.Font.Stretch
     
     public init(
         family: [String] = ["system-ui"],
-        size: FontSize = .medium,
-        weight: FontWeight = .normal,
-        style: FontStyle = .normal,
-        variant: FontVariant = .normal,
+        size: CSS.Font.Size = .medium,
+        weight: CSS.Font.Weight = .normal,
+        style: CSS.Font.Style = .normal,
+        variant: Font.Variant = .normal,
         lineHeight: LineHeight? = nil,
-        stretch: FontStretch = .normal
+        stretch: CSS.Font.Stretch = .normal
     ) {
         self.family = family
         self.size = size
@@ -34,12 +34,12 @@ public struct Font: Sendable, Equatable {
         self.stretch = stretch
     }
     
-    public enum FontSize: Sendable, Equatable {
-        case length(Length?)
-        case keyword(FontSizeKeyword?)
+    public enum Size: Sendable, Equatable {
+        case length(CSS.Length?)
+        case keyword(CSS.Font.Size.Keyword?)
         
         
-        public enum FontSizeKeyword: String, Sendable {
+        public enum Keyword: String, Sendable {
             case xxSmall = "xx-small"
             case xSmall = "x-small"
             case small, medium, large
@@ -49,54 +49,28 @@ public struct Font: Sendable, Equatable {
             case smaller, larger
         }
         
-        public static let xxSmall: FontSize = .keyword(.xxSmall)
-        public static let xSmall: FontSize = .keyword(.xSmall)
-        public static let small: FontSize = .keyword(.small)
-        public static let medium: FontSize = .keyword(.medium)
-        public static let large: FontSize = .keyword(.large)
-        public static let xLarge: FontSize = .keyword(.xLarge)
-        public static let xxLarge: FontSize = .keyword(.xxLarge)
-        public static let xxxLarge: FontSize = .keyword(.xxxLarge)
-        public static let smaller: FontSize = .keyword(.smaller)
-        public static let larger: FontSize = .keyword(.larger)
+        public static let xxSmall: CSS.Font.Size = .keyword(.xxSmall)
+        public static let xSmall: CSS.Font.Size = .keyword(.xSmall)
+        public static let small: CSS.Font.Size = .keyword(.small)
+        public static let medium: CSS.Font.Size = .keyword(.medium)
+        public static let large: CSS.Font.Size = .keyword(.large)
+        public static let xLarge: CSS.Font.Size = .keyword(.xLarge)
+        public static let xxLarge: CSS.Font.Size = .keyword(.xxLarge)
+        public static let xxxLarge: CSS.Font.Size = .keyword(.xxxLarge)
+        public static let smaller: CSS.Font.Size = .keyword(.smaller)
+        public static let larger: CSS.Font.Size = .keyword(.larger)
     }
     
-    public enum FontWeight: Sendable, Equatable, ExpressibleByIntegerLiteral {
-        case keyword(FontWeightKeyword)
-        case number(Int)
-        
-        public init(integerLiteral value: Int) {
-            self = .number(value)
-        }
-        
-        public enum FontWeightKeyword: String, Sendable {
-            case normal, bold, lighter, bolder
-        }
-        
-        public static let normal: FontWeight = .keyword(.normal)
-        public static let bold: FontWeight = .keyword(.bold)
-        public static let lighter: FontWeight = .keyword(.lighter)
-        public static let bolder: FontWeight = .keyword(.bolder)
-        
-        public static let thin: FontWeight = .number(100)
-        public static let extraLight: FontWeight = .number(200)
-        public static let light: FontWeight = .number(300)
-        public static let regular: FontWeight = .number(400)
-        public static let medium: FontWeight = .number(500)
-        public static let semiBold: FontWeight = .number(600)
-        public static let extraBold: FontWeight = .number(800)
-        public static let black: FontWeight = .number(900)
-    }
     
-    public enum FontStyle: String, Sendable {
+    public enum Style: String, Sendable {
         case normal, italic, oblique
     }
     
-    public enum FontVariant: String, Sendable {
+    public enum Variant: String, Sendable {
         case normal, smallCaps = "small-caps"
     }
     
-    public enum FontStretch: String, Sendable {
+    public enum Stretch: String, Sendable {
         case ultraCondensed = "ultra-condensed"
         case extraCondensed = "extra-condensed"
         case condensed
@@ -109,17 +83,17 @@ public struct Font: Sendable, Equatable {
     }
 }
 
-extension Font {
-    public static func system(size: FontSize) -> Font {
+extension CSS.Font {
+    public static func system(size: CSS.Font.Size) -> Font {
         Font(family: ["system-ui"], size: size)
     }
     
-    public static func custom(_ name: String, size: FontSize) -> Font {
+    public static func custom(_ name: String, size: CSS.Font.Size) -> Font {
         Font(family: [name], size: size)
     }
 }
 
-extension Font.FontSize {
+extension CSS.Font.Size {
     public var description: String {
         switch self {
         case .length(let length):
@@ -130,49 +104,40 @@ extension Font.FontSize {
     }
 }
 
-extension Font.FontWeight {
-    public var description: String {
-        switch self {
-        case .keyword(let keyword):
-            return keyword.rawValue
-        case .number(let number):
-            return String(number)
-        }
-    }
-}
 
 
 
-public protocol FontSizeExpressible {
-    var fontSize: Font.FontSize { get }
-}
-
-extension Font.FontSize: FontSizeExpressible {
-    public var fontSize: Font.FontSize { self }
-}
-
-extension Length: FontSizeExpressible {
-    public var fontSize: Font.FontSize { .length(self) }
-}
-
-
-
-extension Font {
-    public init(
-        family: [String] = ["system-ui"],
-        size: FontSizeExpressible = Font.FontSize.medium,
-        weight: FontWeight = .normal,
-        style: FontStyle = .normal,
-        variant: FontVariant = .normal,
-        lineHeight: LineHeightExpressible? = nil,
-        stretch: FontStretch = .normal
-    ) {
-        self.family = family
-        self.size = size.fontSize
-        self.weight = weight
-        self.style = style
-        self.variant = variant
-        self.lineHeight = lineHeight?.lineHeight ?? nil
-        self.stretch = stretch
-    }
-}
+//
+//public protocol CSS.Font.SizeExpressible {
+//    var fontSize: Font.CSS.Font.Size { get }
+//}
+//
+//extension Font.CSS.Font.Size: CSS.Font.SizeExpressible {
+//    public var fontSize: Font.CSS.Font.Size { self }
+//}
+//
+//extension Length: CSS.Font.SizeExpressible {
+//    public var fontSize: Font.CSS.Font.Size { .length(self) }
+//}
+//
+//
+//
+//extension Font {
+//    public init(
+//        family: [String] = ["system-ui"],
+//        size: CSS.Font.SizeExpressible = Font.CSS.Font.Size.medium,
+//        weight: CSS.Font.Weight = .normal,
+//        style: CSS.Font.Style = .normal,
+//        variant: Font.Variant = .normal,
+//        lineHeight: LineHeightExpressible? = nil,
+//        stretch: CSS.Font.Stretch = .normal
+//    ) {
+//        self.family = family
+//        self.size = size.fontSize
+//        self.weight = weight
+//        self.style = style
+//        self.variant = variant
+//        self.lineHeight = lineHeight?.lineHeight ?? nil
+//        self.stretch = stretch
+//    }
+//}

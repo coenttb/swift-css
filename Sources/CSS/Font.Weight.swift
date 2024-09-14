@@ -6,34 +6,34 @@
 //
 
 import Foundation
+extension Font {
+    public enum Weight: Sendable, ExpressibleByIntegerLiteral, Equatable {
+        case keyword(Keyword)
+        case numeric(Int)
+        case global(Global)
 
-public enum FontWeight: Sendable, ExpressibleByIntegerLiteral {
-    case keyword(Keyword)
-    case numeric(Int)
-    case global(Global)
+        public enum Keyword: String, Sendable {
+            case normal
+            case bold
+            case lighter
+            case bolder
+        }
 
-    public enum Keyword: String, Sendable {
-        case normal
-        case bold
-        case lighter
-        case bolder
-    }
+        public enum Global: String, Sendable {
+            case inherit
+            case initial
+            case revert
+            case revertLayer = "revert-layer"
+            case unset
+        }
 
-    public enum Global: String, Sendable {
-        case inherit
-        case initial
-        case revert
-        case revertLayer = "revert-layer"
-        case unset
-    }
-
-    public init(integerLiteral value: Int) {
-        self = .numeric(min(max(1, value), 1000))
+        public init(integerLiteral value: Int) {
+            self = .numeric(min(max(1, value), 1000))
+        }
     }
 }
 
-// Convenience static properties
-extension CSS.FontWeight {
+extension Font.Weight {
     public static let normal = Self.keyword(.normal)
     public static let bold = Self.keyword(.bold)
     public static let lighter = Self.keyword(.lighter)
@@ -55,8 +55,7 @@ extension CSS.FontWeight {
     public static let unset = Self.global(.unset)
 }
 
-// CustomStringConvertible conformance
-extension CSS.FontWeight: CustomStringConvertible {
+extension Font.Weight: CustomStringConvertible {
     public var description: String {
         switch self {
         case .keyword(let keyword):
