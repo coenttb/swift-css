@@ -77,12 +77,7 @@ public enum TextTransform: String {
     case fullSizeKana = "full-size-kana"
 }
 
-public struct TextShadow {
-    let offsetX: Length
-    let offsetY: Length
-    let blurRadius: Length
-    let color: CSS.Color
-}
+
 
 public enum TextOrientation: String {
     case mixed, upright, sideways
