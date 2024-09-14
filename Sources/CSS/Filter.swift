@@ -10,6 +10,10 @@ import Foundation
 public struct Filter: Equatable {
     public var filters: [FilterFunction]
     
+    public init(_ filters: [FilterFunction]) {
+        self.filters = filters
+    }
+    
     public init(_ filters: FilterFunction...) {
         self.filters = filters
     }
