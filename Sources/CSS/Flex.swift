@@ -57,11 +57,11 @@ public enum AlignSelf: String, CaseIterable {
 // MARK: - Flex Container
 
 public struct FlexContainer {
-    var direction: FlexDirection?
-    var wrap: FlexWrap?
-    var justifyContent: JustifyContent?
-    var alignItems: AlignItems?
-    var alignContent: AlignContent?
+    public var direction: FlexDirection?
+    public var wrap: FlexWrap?
+    public var justifyContent: JustifyContent?
+    public var alignItems: AlignItems?
+    public var alignContent: AlignContent?
     
     public init(
         direction: FlexDirection? = nil,
@@ -81,10 +81,10 @@ public struct FlexContainer {
 // MARK: - Flex Item
 
 public struct FlexItem {
-    var grow: FlexGrow?
-    var shrink: FlexShrink?
-    var basis: FlexBasis?
-    var alignSelf: AlignSelf?
+    public var grow: FlexGrow?
+    public var shrink: FlexShrink?
+    public var basis: FlexBasis?
+    public var alignSelf: AlignSelf?
     
     public init(
         grow: FlexGrow? = nil,

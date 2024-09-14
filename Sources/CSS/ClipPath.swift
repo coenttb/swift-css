@@ -14,7 +14,13 @@ public enum ClipPath {
     case polygon(points: [(x: CSS.Length, y: CSS.Length)])
     case custom(String)
 
-    var cssValue: String {
+    public var cssValue: String {
+        self.description
+    }
+}
+
+extension ClipPath: CustomStringConvertible {
+    public var description: String {
         switch self {
         case .circle(let radius, let center):
             let centerPart = center.map { "at \($0.x.description) \($0.y.description)" } ?? ""
