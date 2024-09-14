@@ -45,9 +45,22 @@ let backgroundColor: CSS.Color = .rgba(red: 100, green: 149, blue: 237, alpha: 1
 let fontSize: Length = 24.px // Outputs: 24px
 ```
 
-## Recommended use with swift-html
+## Recommended usage [swift-html](https://github.com/coenttb/swift-html)
 
-You use swift-css as the domain for your own functionality. For example, [swift-html](https://github.com/coenttb/swift-html) uses `swift-css` to easily and safely add inlineStyles to some HTML element.
+`swift-css` serves as the foundation for building your own styling functionality. For instance, [swift-html](https://github.com/coenttb/swift-html) leverages `swift-css` to safely and effortlessly apply inline styles to HTML elements. Here's an example of swift-html's use of swift-css:
+
+```swift
+import HTML
+
+let document = HTMLPreview.modern {
+  h1 { "Type-safe HTML" }
+    .color(.blue)
+    .fontSize(24.px)
+  p { "With type-safe CSS!" }
+    .margin(top: 10.px, bottom: 10.px)
+}
+```
+The .color and .fontSize methods leverage the CSS Domain Model to ensure type-safe styling. Working with type-safe CSS makes web development a truly enjoyable experience.
 
 ## Installation
 
