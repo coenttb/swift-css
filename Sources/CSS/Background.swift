@@ -1,5 +1,7 @@
 import Foundation
 
+//here i replaced percentage with Double. Should double-check that this works as intended.
+
 public enum Background: Sendable {
     case color(CSS.Color)
     case image(Image)
@@ -93,7 +95,7 @@ public enum Background: Sendable {
     public enum Position: Sendable {
         case keywords(horizontal: HorizontalKeyword, vertical: VerticalKeyword)
         case lengths(x: Length, y: Length)
-        case percentages(x: Percentage, y: Percentage)
+        case percentages(x: Double, y: Double)
         case mixed(MixedPosition)
 
         public enum HorizontalKeyword: String, Sendable {
@@ -107,8 +109,8 @@ public enum Background: Sendable {
         public enum MixedPosition: Sendable {
             case horizontalKeywordVerticalLength(x: HorizontalKeyword, y: Length)
             case horizontalLengthVerticalKeyword(x: Length, y: VerticalKeyword)
-            case horizontalKeywordVerticalPercentage(x: HorizontalKeyword, y: Percentage)
-            case horizontalPercentageVerticalKeyword(x: Percentage, y: VerticalKeyword)
+            case horizontalKeywordVerticalPercentage(x: HorizontalKeyword, y: Double)
+            case horizontalPercentageVerticalKeyword(x: Double, y: VerticalKeyword)
         }
 
         public static func mixed(x: HorizontalKeyword, y: Length) -> Position {
@@ -119,11 +121,11 @@ public enum Background: Sendable {
             .mixed(.horizontalLengthVerticalKeyword(x: x, y: y))
         }
 
-        public static func mixed(x: HorizontalKeyword, y: Percentage) -> Position {
+        public static func mixed(x: HorizontalKeyword, y: Double) -> Position {
             .mixed(.horizontalKeywordVerticalPercentage(x: x, y: y))
         }
 
-        public static func mixed(x: Percentage, y: VerticalKeyword) -> Position {
+        public static func mixed(x: Double, y: VerticalKeyword) -> Position {
             .mixed(.horizontalPercentageVerticalKeyword(x: x, y: y))
         }
     }
@@ -131,7 +133,7 @@ public enum Background: Sendable {
     public enum Size: Sendable {
         case keywords(SizeKeyword)
         case lengths(width: Length, height: Length)
-        case percentages(width: Percentage, height: Percentage)
+        case percentages(width: Double, height: Double)
 
         public enum SizeKeyword: String, Sendable {
             case cover, contain

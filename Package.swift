@@ -9,23 +9,16 @@ extension String {
 
 extension Target.Dependency {
     static var css: Self { .target(name: .css) }
-//    static var htmlCore: Self { .target(name: .htmlCore) }
-//    static var html: Self { .target(name: .html) }
-//    static var markdown: Self { .target(name: .markdown) }
 }
 
 extension Target.Dependency {
     static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
-//    static var percent: Self { .product(name: "Percent", package: "swift-percent") }
 }
 
 extension [Package.Dependency] {
     static var `default`: Self {
         [
-//            .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.2"),
-//            .package(url: "https://github.com/coenttb/swift-percent.git", branch: "main"),
             .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.3.5"),
-//            .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.4.0"),
         ]
     }
 }
@@ -42,13 +35,10 @@ extension Package {
     ) -> Package {
         return Package(
             name: "swift-css",
-            platforms: [.macOS(.v14), .iOS(.v17)],
+            platforms: [.iOS(.v13), .macOS(.v10_15), .tvOS(.v13), .watchOS(.v6)],
             products: [
                 [
-//                    .library(name: .html, targets: [.html, .markdown]),
                     .library(name: .css, targets: [.css]),
-//                    .library(name: .htmlCore, targets: [.htmlCore]),
-//                    .library(name: .markdown, targets: [.markdown]),
                 ]
             ].flatMap { $0
             },
@@ -77,6 +67,7 @@ let package = Package.html(
             name: .css,
             library: true,
             dependencies: [
+                .dependencies
             ]
         ),
     ]
