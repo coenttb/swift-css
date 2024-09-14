@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Angle: Sendable, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
+public enum Angle: Sendable, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, Equatable {
     case deg(Double)
     case rad(Double)
     case grad(Double)
