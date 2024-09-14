@@ -1,6 +1,5 @@
-# 🗺 swift-html
-
-A Swift DSL for type-safe, extensible, and transformable HTML documents and CSS styles.
+# swift-css
+A Swift DSL for type-safe, extensible, and transformable CSS styles.
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -8,92 +7,87 @@ A Swift DSL for type-safe, extensible, and transformable HTML documents and CSS 
 
 This Swift package is currently in active development and is subject to frequent changes. Features and APIs may change without prior notice until a stable release is available.
 
-## Table of Contents
+swift-css is a Swift package that provides a comprehensive domain model for CSS properties and values. It allows you to work with CSS concepts in a type-safe, Swift-friendly manner, enabling powerful and precise styling in your Swift projects.
 
-  - [New Approach](#new-approach)
-  - [Examples](#examples)
-  - [Safety](#safety)
-  - [FAQ](#faq)
-  - [Installation](#installation)
-  - [Acknowledgements More](#acknowledgements)
-  - [License](#license)
+* [What is swift-css?](#what-is-swift-css)
+* [Features](#features)
+* [Basic usage](#basic-usage)
+* [Documentation](#documentation)
+* [Installation](#installation)
 
-## New Approach
+## What is swift-css?
 
-This version of swift-html uses the new approach as implemented on [pointfree.co](https://www.pointfree.co). It offers a more ergonomic and type-safe way of constructing HTML documents, along with my type-safe CSS styling.
+swift-css offers a set of Swift types and structures that model various CSS concepts:
 
-## Examples
+* **CSS Properties**: Type-safe representations of CSS properties like `Color`, `Font`, `Margin`, `Padding`, etc.
+* **CSS Values**: Strongly-typed values for CSS properties, including lengths, colors, and keywords.
+* **Layout Properties**: Support for Flexbox and other layout concepts.
+* **Animations and Transitions**: Types for dealing with CSS animations and transitions.
 
-HTML documents can be created using a declarative, SwiftUI-like syntax, with type safe CSS.
+This library allows Swift developers to work with CSS concepts using native Swift syntax and type safety, reducing errors and improving the developer experience when dealing with styles in Swift applications.
+
+## Features
+
+* **Type-safe CSS properties**: Define and manipulate CSS properties using Swift types, eliminating typos and ensuring valid values.
+* **Comprehensive coverage**: Support for a wide range of CSS properties including colors, fonts, layouts, animations, and more.
+* **Swift-native syntax**: Work with CSS concepts using familiar Swift syntax and conventions.
+* **Extensible**: Easy to extend with new CSS properties or custom values.
+* **Value conversions**: Convert between different units and formats where appropriate.
+
+## Basic usage
+
+Here's a quick example of how you might use swift-css:
 
 ```swift
-import HTML
+import SwiftCSS
 
-let document = HTMLPreview.modern {
-  h1 { "Type-safe HTML" }
-    .color(.blue)
-    .fontSize(24.px)
-  p { "With type-safe CSS!" }
-    .margin(top: 10.px, bottom: 10.px)
-}
+let backgroundColor = Color.rgb(100, 149, 237)
+let fontSize = FontSize.px(24)
+let margin = Margin.all(Length.px(10))
+
+let buttonStyle = Style(
+  backgroundColor: .hex("#007AFF"),
+  padding: Padding.all(Length.px(10)),
+  borderRadius: BorderRadius(Length.px(5))
+)
+
+print(backgroundColor)  // Outputs: rgb(100, 149, 237)
+print(fontSize)         // Outputs: 24px
+print(margin)           // Outputs: 10px
+print(buttonStyle)      // Outputs: background-color: #007AFF; padding: 10px; border-radius: 5px;
 ```
 
-> Note: For a quick and convenient way to give your HTMLDocument a modern look, use HTMLPreview.modern. I encourage you to create a custom implementation by conforming your HTMLDocument struct or enum to the HTMLDocument protocol.
+## Recommended use with swift-html
 
-You can even preview the HTML using #Preview.
+See [swift-html](https://github.com/coenttb/swift-html) for an example of how to use `swift-css`. `swift-html` uses `swift-css` as its model and provides convenience methods to easily and safely add inlineStyles to some HTML element.
 
-```
-#if canImport(SwiftUI)
-import SwiftUI
-import HTML
-
-#Preview {
-  HTMLPreview.modern {
-    h1 { "Welcome!" }
-      .color(.blue)
-      .fontSize(24.px)
-    p { "You've found our site!" }
-      .margin(top: 10.px, bottom: 10.px)
-    }
-  }
-}
-#endif
-```
-
-## Safety
-
-Because I'm embedding the DSL in Swift, I can take advantage of some advanced Swift features to add an extra layer of safety when constructing HTML documents. For a simple example, I can strengthen many HTML APIs to force their true types rather than just relying on strings. 
-
-My type-safe CSS approach ensures that you can only apply valid CSS properties to HTML elements, preventing common styling errors at compile-time.
-
-## FAQ
-
-### Can I use this with existing Swift web frameworks like Vapor?
-
-Yes! Conform your HTMLDocument to AsyncResponseEncondable to serve it through Vapor.
- 
 ## Installation
 
-You can add swift-html to an Xcode project by adding it as a package dependency.
+To install the package, add the following line to your `Package.swift` file:
 
-> https://github.com/coenttb/swift-html
-
-If you want to use swift-html in a [SwiftPM](https://swift.org/package-manager/) project, it's as simple as adding it to a `dependencies` clause in your `Package.swift`:
-
-``` swift
+```swift
 dependencies: [
-  .package(url: "https://github.com/coenttb/swift-html", branch: "main")
+    .package(url: "https://github.com/coenttb/swift-css.git", from: "0.1.0")
 ]
 ```
 
-## Acknowledgements
+You can then make CSS available to your Package's target by including CSS in your target's dependencies as follows:
+```swift
+targets: [
+    .target(
+        name: "TheNameOfYourTarget",
+        dependencies: [
+            .product(name: "CSS", package: "swift-css")
+        ]
+    )
+]
+```
 
-I want to express my gratitude to the Point-Free team, especially Brandon Williams and Stephen Celis. Their innovative work has been a longtime inspiration. The concepts and techniques they've developed and shared through their video series and open-source contributions have been invaluable in creating this library.
+## Contributing
 
-This project is essentially a fork and adaptation of their work, aiming to make these powerful ideas more accessible and adaptable for various use cases. I encourage everyone to check out [Point-Free](https://www.pointfree.co) and their [open-source projects](https://github.com/pointfreeco) to learn more about the original concepts and see them in action.
-
-Thank you, Point-Free team, for your continued contributions to the Swift community!
+We welcome contributions to swift-css! If you have an idea for a new feature or have found a bug, please open an issue. If you'd like to contribute code, please fork the repository and submit a pull request.
 
 ## License
 
-All modules are released under the MIT license. See [LICENSE](LICENSE) for details.
+This library is released under the APACHE license. See [LICENSE](LICENSE) for details.
+
