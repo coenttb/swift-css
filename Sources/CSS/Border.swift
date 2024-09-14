@@ -59,9 +59,6 @@ extension CSS.Border.Width {
     }
 }
 
-
-
-
 extension CSS.Border: CustomStringConvertible {
     public var description: String {
         switch self {
