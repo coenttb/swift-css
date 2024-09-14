@@ -96,20 +96,6 @@ public struct Font: Sendable, Equatable {
         case normal, smallCaps = "small-caps"
     }
     
-    public enum LineHeight: Sendable, Equatable, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
-        public init(floatLiteral value: Double) {
-            self = .number(value)
-        }
-        
-        public init(integerLiteral value: Int) {
-            self = .number(Double(value))
-        }
-        case normal
-        case number(Double?)
-        case length(Length?)
-        case percentage(Double?)
-    }
-    
     public enum FontStretch: String, Sendable {
         case ultraCondensed = "ultra-condensed"
         case extraCondensed = "extra-condensed"
@@ -120,24 +106,6 @@ public struct Font: Sendable, Equatable {
         case expanded
         case extraExpanded = "extra-expanded"
         case ultraExpanded = "ultra-expanded"
-    }
-    
-    public enum Property: Sendable {
-        case family([String]?)
-        case size(FontSize?)
-        case weight(FontWeight?)
-        case style(FontStyle?)
-        case variant(FontVariant?)
-        case lineHeight(LineHeight?)
-        case stretch(FontStretch?)
-        
-        public static func size(_ length: Length?) -> Self {
-            return .size(.length(length))
-        }
-        
-        public static func lineHeight(_ length: Length?) -> Self {
-            return .lineHeight(.length(length))
-        }
     }
 }
 
@@ -173,17 +141,38 @@ extension Font.FontWeight {
     }
 }
 
-extension Font.LineHeight {
-    public var description: String {
-        switch self {
-        case .normal:
-            return "normal"
-        case .number(let number):
-            return number.map { "\($0)" } ?? ""
-        case .length(let length):
-            return length?.description ?? ""
-        case .percentage(let percentage):
-            return percentage.map { "\($0)%" } ?? ""
-        }
+
+
+public protocol FontSizeExpressible {
+    var fontSize: Font.FontSize { get }
+}
+
+extension Font.FontSize: FontSizeExpressible {
+    public var fontSize: Font.FontSize { self }
+}
+
+extension Length: FontSizeExpressible {
+    public var fontSize: Font.FontSize { .length(self) }
+}
+
+
+
+extension Font {
+    public init(
+        family: [String] = ["system-ui"],
+        size: FontSizeExpressible = Font.FontSize.medium,
+        weight: FontWeight = .normal,
+        style: FontStyle = .normal,
+        variant: FontVariant = .normal,
+        lineHeight: LineHeightExpressible? = nil,
+        stretch: FontStretch = .normal
+    ) {
+        self.family = family
+        self.size = size.fontSize
+        self.weight = weight
+        self.style = style
+        self.variant = variant
+        self.lineHeight = lineHeight?.lineHeight ?? nil
+        self.stretch = stretch
     }
 }

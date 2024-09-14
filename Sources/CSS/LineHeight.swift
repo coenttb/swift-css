@@ -26,12 +26,27 @@ extension LineHeight: CustomStringConvertible {
         switch self {
         case .normal:
             return "normal"
-        case .number(let value):
-            return value.map { "\($0)" } ?? ""
+        case .number(let number):
+            return number.map { "\($0)" } ?? ""
         case .length(let length):
             return length?.description ?? ""
-        case .percentage(let value):
-            return value.map { "\($0)%" } ?? ""
+        case .percentage(let percentage):
+            return percentage.map { "\($0)%" } ?? ""
         }
     }
 }
+
+
+public protocol LineHeightExpressible {
+    var lineHeight: LineHeight { get }
+}
+
+extension LineHeight: LineHeightExpressible {
+    public var lineHeight: LineHeight { self }
+}
+
+extension Length: LineHeightExpressible {
+    public var lineHeight: LineHeight { .length(self) }
+}
+
+

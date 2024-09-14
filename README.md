@@ -41,9 +41,9 @@ Here's a quick example of how you might use swift-css:
 ```swift
 import SwiftCSS
 
-let backgroundColor = Color.rgb(100, 149, 237)
-let fontSize = FontSize.px(24)
-let margin = Margin.all(Length.px(10))
+let backgroundColor = CSS.Color.rgba(red: 100, green: 149, blue: 237, alpha: 1)
+let fontSize = 24.px
+let font = Margin.all(Length.px(10))
 
 let buttonStyle = Style(
   backgroundColor: .hex("#007AFF"),
