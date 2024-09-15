@@ -37,7 +37,7 @@ public enum PageBreak {
         case inherit
     }
     
-    var description: (String, String) {
+    public var description: (String, String) {
         switch self {
         case .after(let after):
             ("page-break-after", after.rawValue)
