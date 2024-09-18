@@ -101,3 +101,78 @@ extension CSS.Color {
     public static let revertLayer: Self = .global(.revertLayer)
     public static let unset: Self = .global(.unset)
 }
+
+
+extension CSS.Color {
+    public func adjustBrightness(by percentage: Double) -> CSS.Color {
+        guard percentage >= -1, percentage <= 1 else { return self }
+        
+        func adjustComponent(_ value: Int) -> Int {
+            if percentage > 0 {
+                return min(255, max(0, Int(Double(value) + (255 - Double(value)) * percentage)))
+            } else {
+                return max(0, min(255, Int(Double(value) * (1 + percentage))))
+            }
+        }
+        
+        func adjustLightness(_ l: Double) -> Double {
+            if percentage > 0 {
+                return min(100, max(0, l + (100 - l) * percentage))
+            } else {
+                return max(0, min(100, l * (1 + percentage)))
+            }
+        }
+        
+        switch self {
+        case .rgb(let r, let g, let b):
+            return .rgb(red: adjustComponent(r), green: adjustComponent(g), blue: adjustComponent(b))
+            
+        case .rgba(let r, let g, let b, let a):
+            return .rgba(red: adjustComponent(r), green: adjustComponent(g), blue: adjustComponent(b), alpha: a)
+            
+        case .hsl(let h, let s, let l):
+            return .hsl(hue: h, saturation: s, lightness: adjustLightness(l))
+            
+        case .hsla(let h, let s, let l, let a):
+            return .hsla(hue: h, saturation: s, lightness: adjustLightness(l), alpha: a)
+            
+        case .hex(let value):
+            let rgb = hexToRGB(value)
+            let adjustedRGB = rgb.map(adjustComponent)
+            return .hex(rgbToHex(adjustedRGB))
+            
+        default:
+            return self
+        }
+    }
+    
+    private func hexToRGB(_ hex: String) -> [Int] {
+        var hexColor = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
+        if hexColor.count == 3 {
+            hexColor = hexColor.map { "\($0)\($0)" }.joined()
+        }
+        guard hexColor.count == 6 else { return [] }
+        
+        return stride(from: 0, to: 6, by: 2).compactMap { i in
+            let start = hexColor.index(hexColor.startIndex, offsetBy: i)
+            let end = hexColor.index(start, offsetBy: 2)
+            let hexPair = String(hexColor[start..<end])
+            return Int(hexPair, radix: 16)
+        }
+    }
+    
+    private func rgbToHex(_ rgb: [Int]) -> String {
+        String(format: "#%02X%02X%02X", rgb[0], rgb[1], rgb[2])
+    }
+}
+
+
+extension CSS.Color {
+    public func darker(by percentage: Double = 0.2) -> CSS.Color {
+        adjustBrightness(by: -percentage)
+    }
+    
+    public func lighter(by percentage: Double = 0.2) -> CSS.Color {
+        adjustBrightness(by: percentage)
+    }
+}
